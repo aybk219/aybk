@@ -1,29 +1,19 @@
-name: Tests
+@startuml
 
-on:
-  push:
-  pull_request:
+package "aybk" {
+    class app {
+        + add(a: int, b: int): int
+    }
+}
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+package "tests" {
+    class test_app {
+        + test_add()
+    }
+}
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+test_app --> app : imports / uses add()
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+@enduml
 
-    - name: Install dependencies
-      run: |
-        pip install pytest
-
-    - name: Run tests
-      run: |
-        export PYTHONPATH="$PYTHONPATH:$(pwd)"
-        mkdir -p test-results
-        pytest --junitxml=test-results/report.xml
 
